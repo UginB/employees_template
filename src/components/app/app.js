@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import nextId from "react-id-generator";
 
 import AppInfo from '../app-info/app-info';
 import SearchPanel from '../search-panel/search-panel';
@@ -16,7 +17,7 @@ class App extends Component {
         this.state = {
             data: [
                 {name: 'Пупа', salary: 800, increase: false, id: 1},
-                {name: 'Лупа', salary: 3000, increase: true, id: 2},
+                {name: 'Лупа', salary: 3000, increase: false, id: 2},
                 {name: 'Жонни', salary: 5000, increase: false, id: 3}
             ]
         }
@@ -41,6 +42,18 @@ class App extends Component {
         })
     }
 
+    htmlId = nextId();
+
+    addItem = (name, salary) => {
+        this.setState(({data}) => {
+            const newArr = [...data].push({name: name, salary: salary, increase: false, id: this.htmlId()})
+            console.log(newArr);
+            return {
+                data: newArr
+            }
+        })
+    }
+
     render() {
         return (
             <div className='app'>
@@ -54,7 +67,8 @@ class App extends Component {
                 <EmployeesList 
                     data={this.state.data}
                     onDelete={this.deleteItem}/>
-                <EmployeesAddForm />
+                <EmployeesAddForm 
+                    onAddItem={this.addItem}/>
             </div>
         );
     }
