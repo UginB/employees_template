@@ -42,18 +42,16 @@ class App extends Component {
         })
     }
 
-    htmlId = nextId();
-
     addItem = (name, salary) => {
         this.setState(({data}) => {
-            const newArr = [...data].push({name: name, salary: salary, increase: false, id: this.htmlId()})
-            console.log(newArr);
+            const newArr = [...data]
+            newArr.push({name: name, salary: salary, increase: false, id: nextId()})
             return {
                 data: newArr
             }
         })
     }
-
+    
     render() {
         return (
             <div className='app'>
