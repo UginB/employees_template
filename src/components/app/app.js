@@ -20,7 +20,8 @@ class App extends Component {
                 {name: 'Лупа', salary: 3000, increase: false, like: false, id: 2},
                 {name: 'Жонни', salary: 5000, increase: false, like: false, id: 3}
             ],
-            term: ''
+            term: '',
+            filter: 'all'
         }
     }
 
@@ -114,26 +115,38 @@ class App extends Component {
     }
 
     filterEmp = (items, filter) => {
+
+        // if (filter === 'all') {
+        //     return items;
+        // } else if (filter === 'moreThan1000') {
+        //     return items.filter(item => {
+        //         return item.salary > 1000
+        //     })
+        // } else if (filter === 'increase') {
+        //     return items.filter(item => {
+        //         return item.increase
+        //     })
+        // }
+
         switch (filter) {
-            case 'all' : 
-                return items;
-            case 'moreThan1000' : 
-                return items.filter(item => {
-                    return item.salary > 1000
-                })
-            case 'increase' : 
-                return items.filter(item => {
-                    return item.increase.indexOf(true) > -1
-                })
-            default: return items;
+            case 'moreThan1000': 
+                return items.filter(item => item.salary > 1000) 
+            case 'increase':
+                return items.filter(item => item.increase)
+            default:
+                return items
         }
     }
 
+    onFilter = (filter) => {
+        this.setState({filter});
+    }
+
     render() {
-        const {data, term} = this.state;
+        const {data, term, filter} = this.state;
         const employees = this.state.data.length;
         let employeesIncrease = this.state.data.filter(item => item.increase).length;
-        const visibleData = this.searchEmp(data, term);
+        const visibleData = this.filterEmp(this.searchEmp(data, term), filter);
 
         return (
             <div className='app'>
@@ -143,9 +156,7 @@ class App extends Component {
     
                 <div className='search-panel'>
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                    <AppFilter 
-                        onFilter={this.filterEmp}
-                        data={visibleData}/>
+                    <AppFilter onFilter={this.onFilter} filter={filter}/>
                 </div>
                 
                 <EmployeesList 
