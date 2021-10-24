@@ -100,6 +100,17 @@ class App extends Component {
         }))
     }
 
+    onChangeProp = (id, prop, count) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if(item.id === id) {
+                    return {...item, [prop]: count}
+                }
+                return item;
+            })
+        }))
+    }
+
     searchEmp = (items, term) => {
         if (term.length === 0) {
             return items;
@@ -162,7 +173,8 @@ class App extends Component {
                 <EmployeesList 
                     data={visibleData}
                     onDelete={this.deleteItem}
-                    onToggleProp={this.onToggleProp}/>
+                    onToggleProp={this.onToggleProp}
+                    onChangeProp={this.onChangeProp}/>
                 <EmployeesAddForm 
                     onAddItem={this.addItem}/>
             </div>
